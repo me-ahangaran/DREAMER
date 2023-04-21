@@ -1,0 +1,2 @@
+Rows,Columns,1-PC,1-SpearmanCorrelation,1-NullRatio,1-Outliers,1-ClassOverlap,Classify Accuracy,Clustering Accuracy,Average Accuracy,Total Quality
+2376,45,0.7466,0.7312,0.7497,0.0964,0.1654,0.4951,0.6016,0.5484,0.6844
