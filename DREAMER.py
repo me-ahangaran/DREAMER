@@ -40,8 +40,6 @@ class DREAMER():
     weightsFolder = "Weights"  #name of weights folder
 
     #json config file data
-    print('DREAMER started!')
-    print('Read json configuration.')
     config = {}
     with open(jsonFile_path, 'r') as config_file:
               config = json.loads(config_file.read())
@@ -76,10 +74,7 @@ class DREAMER():
 
     if R == 0:
        R = cpu_count() #get all CPU cores
-
-    print(f'The process runs on {R} cores and {d} subtables in each core.')
     
-    print('Read master dataset.')
     numOfQualityMeasures = 5    #number of data quality measures
     # 2-D matrix of runs with dimension [Rxd]
     runsArray = [[DataReadinessRecord()] for p in range(R)]
@@ -92,8 +87,6 @@ class DREAMER():
     fileName = file_path[0:fileNameLength-4]    #file name without .csv extension
     dfZero_fileName = fileName+'_Zero.csv'
     df_master.to_csv(dfZero_fileName, index = False, na_rep='0')  #create zerofile
-    
-    print('Zero dataset file was created.')
     dfZero = pd.read_csv(dfZero_fileName)
     dfZero_orig = dfZero.copy()
     del dfZero[target_column]
@@ -348,7 +341,6 @@ class DREAMER():
         
     #print all sub-tables of all runs into separate files
     def printSubtableFilesRuns(self):
-        print('Exporting DREAMER results into output files ...')
         runTable = np.zeros((self.d+1,11), dtype=object) #table for each run (sub-tables of the run)
         runTable[0][0] = "Rows"
         runTable[0][1] = "Columns"
@@ -443,7 +435,6 @@ class DREAMER():
         
     #print all sub-tables of all runs for training weights into separate files
     def printFileRunsWeights(self):
-        print('print sub-tables in files.')
         runTable = np.zeros((self.d+1,10), dtype=object) #table for each run (sub-tables of the run)
         runTable[0][0] = "Rows"
         runTable[0][1] = "Columns"
@@ -626,7 +617,6 @@ class DREAMER():
         
     #Train weights of data quality measures
     def learnWeights(self):
-        print('Learning weights of data quality measures ...')
         weightsTable = np.zeros((self.R+1,self.numOfQualityMeasures), dtype=object) #weights for each run (sub-tables of the run)
         weightsTable[0][0] = "PC"
         weightsTable[0][1] = "Spearman"
@@ -704,13 +694,15 @@ if __name__ == '__main__':
     dreamer = DREAMER()
     print('DREAMER started for user ',dreamer.folder_name,'.')
     start = timeit.default_timer()  #Start timer
-    print('Creating random sub-tables ...')
+    print('Read json configuration.')
+    print('Random exploration started.')
     dreamer.runDREAMER()  #main DREAMER process
     stop = timeit.default_timer()   #Stop timer
     file = open(dreamer.timeFile, 'w')
     duration = (stop - start) / 60
     duration = round(duration,2)
-    print('DREAMER process was finished successfully.')
+    print('DREAMER process finished successfully.')
+    print('Running time is ',duration, ' minutes.')
     file.write('Running time (minutes): ')
     file.write(str(duration))
     file.close()
