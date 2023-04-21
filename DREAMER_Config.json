@@ -5,8 +5,8 @@
     },
     
     "data_settings": {
-      "file_name": "wdbc.csv", 
-	  "target_column": "target",
+      "file_name": "ADNI.csv", 
+	  "target_column": "DX_bl",
 	  "folder_name": "user1"
     },
     
