@@ -29,6 +29,37 @@ import timeit
 from sklearn.linear_model import SGDClassifier
 import json
 
+from pymongo import MongoClient
+from flask import Flask, request, make_response
+from pymongo.collection import ReturnDocument
+import json
+import copy
+import os
+from io import StringIO
+
+client = MongoClient('mongodb+srv://admin:dreamer@dreamer-project.8sud7nu.mongodb.net/?retryWrites=true&w=majority')
+db = client['test']
+
+def createDir(name):
+    if not os.path.isdir(name):
+        os.mkdir(name)
+
+def retriveData():
+    collection = db['WorkQueue']
+    earliestTask = collection.find_one()
+    if not earliestTask:
+        return None
+    query = { "_id": earliestTask["_id"] }
+    #COMMENTING OUT THE DELETE IN TESTING!
+    #collection.delete_one(query)
+    settings = json.loads(earliestTask['data_settings'])
+
+    collection = db['input']
+    document = collection.find_one({'fileID': earliestTask['fileID']})
+    data = StringIO(document['file'])
+
+    return settings, data
+
 class DREAMER():
     
     jsonFile_path = "DREAMER_Config.json"  #DREAMER JSON file
@@ -40,12 +71,17 @@ class DREAMER():
     weightsFolder = "Weights"  #name of weights folder
 
     #json config file data
+    
     config = {}
     with open(jsonFile_path, 'r') as config_file:
               config = json.loads(config_file.read())
     
+    ds, f = retriveData()
+
+    f_copy = f
+    
     search_space = config['search_space']
-    data_settings = config['data_settings']
+    data_settings = ds
     free_params = config['free_params']
       
     d = search_space['subtables']    #number of sub-tables in each run of the algorithm
@@ -53,7 +89,14 @@ class DREAMER():
     file_name = data_settings['file_name']   #main CSV file including empty cells
     target_column = data_settings['target_column']  #target column of the dataset for supervised learning
     folder_name = data_settings['folder_name']  #name of unique folder of user
-    file_path = "./"+folder_name+"/"+dataFolder+"/"+file_name   #dataset file path
+    createDir(folder_name)
+    createDir(os.path.join(folder_name, dataFolder))
+    file_path = "./"+folder_name+"/"+dataFolder+"/"+file_name+".csv"   #dataset file path
+    opf = os.path.join(folder_name, outputFolder)
+    createDir(opf)
+    createDir(os.path.join(opf, runsFolder))
+    createDir(os.path.join(opf, weightsFolder))
+    
     
     runBestSubtablesPath = "./"+folder_name+"/"+outputFolder+"/"+runsFolder+"/Run_BestSubtables.csv"  #path of best subtables of runs
     runsPath = "./"+folder_name+"/"+outputFolder+"/"+runsFolder+"/Run"  #path of runs files
@@ -81,11 +124,13 @@ class DREAMER():
     #new object of data readiness recoord for master table
     readinessRecord_master = DataReadinessRecord() 
     
-    df_master = pd.read_csv(file_path) #original data frame including nan elements and target column
+    df_master = pd.read_csv(f) #original data frame including nan elements and target column
     
     fileNameLength = len(file_path)
     fileName = file_path[0:fileNameLength-4]    #file name without .csv extension
     dfZero_fileName = fileName+'_Zero.csv'
+    if not os.path.isfile(file_path):
+        df_master.to_csv(file_path, index = False) 
     df_master.to_csv(dfZero_fileName, index = False, na_rep='0')  #create zerofile
     dfZero = pd.read_csv(dfZero_fileName)
     dfZero_orig = dfZero.copy()
@@ -670,7 +715,7 @@ class DREAMER():
     
     #multiprocessing pooling
     def runDREAMER(self):
-    
+        # self.R = 1 # TESTING WITH ONLY ONE CORE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         cores = self.R #number of CPU cores for multiprocessing
         f_array = np.empty(cores, dtype=object)
         

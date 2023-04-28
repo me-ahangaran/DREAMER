@@ -1,7 +1,7 @@
 {
     "search_space": {
       "subtables": 10,
-	  "cores": 2
+	  "cores": 1
     },
     
     "data_settings": {
