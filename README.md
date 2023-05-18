@@ -13,13 +13,14 @@ To install the DREAMER use the follolwing command:
 
 ## How to run DREAMER?
 The input dataset of DREAMER should be numerical in CSV tabular format and consists of one class (label) column.
-These are steps for running DREAMER on your master dataset:  
-1- Put the CSV dataset within your root folder.  
-2- Setup json file parameters and put it within the root folder. The JSON file name must be "DREAMER_Config.json".  
-3- Run DREAMER process using your own main file by calling dreamer.run() function after creating DREAMER object "dreamer"
-(see "DREAMER_Run.py" file in the test folder).  
-4- The results inculding cleansed version of the master dataset and some statistical reports will be generated in the output
-folder.
+These are steps for running DREAMER on your master dataset:
+  
+**1. Put the CSV dataset within your root folder.**  
+**2. Setup json file parameters and put it within the root folder. The JSON file name must be "DREAMER_Config.json".**  
+**3. Run DREAMER process using your own main file by calling dreamer.run() function after creating DREAMER object "dreamer"
+(see "DREAMER_Run.py" file in the test folder).**  
+**4. The results inculding cleansed version of the master dataset and some statistical reports will be generated in the output
+folder.**
 
 ## DREAMER json configuration
 The DREAMER_Config.json file has three main features: "search_space", "data_settings", and "free_params". Please see the
