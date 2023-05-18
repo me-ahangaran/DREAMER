@@ -1,4 +1,4 @@
-# DREAMER: Data REAdiness for MachinE learning Research
+## DREAMER: Data REAdiness for MachinE learning Research
 DREAMER is a computational framework to assess readiness level of datasets for machine learning pipeline.
 It uses both supervised and unsupervised approaches with random exploration method for data readiness evaluation.
 The DREAMER framework uses Python Pooling Multi-Processing method to obtain most benefit of computational resources.
