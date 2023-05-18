@@ -4,7 +4,7 @@ from DREAMER import 0.0.1
 
 setup(
     name='DREAMER',
-    version=__version__,
+    version=0.0.1,
 
     url='https://github.com/me-ahangaran/DREAMER',
     author='Meysam Ahangaran',
