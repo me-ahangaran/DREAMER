@@ -13,20 +13,18 @@ To install the DREAMER use the follolwing command:
 
 ## How to run DREAMER?
 The input dataset of DREAMER should be numerical in CSV tabular format and consists of one class (label) column.
-These are steps for running DREAMER on your master dataset:
-1- Put the CSV dataset within your root folder.
-2- Setup json file parameters and put it within the root folder. The JSON file name must be "DREAMER_Config.json".
-3- Run DREAMER main file with these three simple lines codes (see "DREAMER_Run.py" file):
-   from DREAMER import DREAMER   #import DREAMER package
-   dreamer = DREAMER()   #DREAMER object
-   dreamer.run()  #main DREAMER process
-4- The results inculding cleansed version of the master dataset and some statistical reports will be generated in the
-folder within the root folder according to the name the was specified in the DREAMER_Config.json file.
+These are steps for running DREAMER on your master dataset:  
+1- Put the CSV dataset within your root folder.  
+2- Setup json file parameters and put it within the root folder. The JSON file name must be "DREAMER_Config.json".  
+3- Run DREAMER process using your own main file by calling dreamer.run() function after creating DREAMER object "dreamer"
+(see "DREAMER_Run.py" file in the test folder).  
+4- The results inculding cleansed version of the master dataset and some statistical reports will be generated in the output
+folder.
 
 ## DREAMER json configuration
 The DREAMER_Config.json file has three main features: "search_space", "data_settings", and "free_params". Please see the
-sample DREAMER configuration file to set the parameters according to your own dataset. In the following, the specification
-of each json features will be described:
+sample DREAMER configuration file to setup parameters according to your own dataset. In the following, the specification
+of each json file features will be described:
 
 ### 1. search_space
 This feature has two parameters: "subtables" and "cores". Parameter "subtable" specified the number of
