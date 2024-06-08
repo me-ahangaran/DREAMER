@@ -67,4 +67,6 @@ We have developed **DREAMER**, a web-based tool accessible at https://dreamer.bu
 
 <img src = "https://github.com/me-ahangaran/DREAMER/blob/main/Web_framework.svg">
 
-
+# Reference
+For more information read the DREAMER article here:
+https://link.springer.com/article/10.1186/s12911-024-02544-w
